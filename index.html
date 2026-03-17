@@ -21,6 +21,7 @@
             box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
             z-index: 10;
             border: 3px solid white;
+            background-color: #e5e7eb; /* Placeholder color */
         }
         @media (min-width: 768px) {
             .video-container {
@@ -34,10 +35,20 @@
             left: 0;
             width: 100%;
             height: 100%;
+            display: none; /* Hidden until ID is provided */
         }
-        .pencil-arrow {
-            filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.1));
-            pointer-events: none;
+        .video-placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+            color: #6b7280;
         }
         @keyframes bounce-down {
             0%, 100% { transform: translateY(0); }
@@ -50,6 +61,7 @@
 </head>
 <body class="text-slate-900 pb-12 sm:pb-20">
 
+    <!-- Header / Navbar -->
     <nav class="w-full py-4 px-4 sm:px-8 flex justify-between items-center bg-white border-b-2 border-slate-100 shadow-sm sticky top-0 z-50">
         <div class="flex items-center space-x-3">
             <img src="https://firebasestorage.googleapis.com/v0/b/accountability-566c2.firebasestorage.app/o/088529ce-52f4-4ef7-a65f-0923d5901386.png?alt=media" 
@@ -68,6 +80,7 @@
 
     <main class="max-w-4xl mx-auto px-4 sm:px-6 pt-8 sm:pt-16">
         
+        <!-- Header Section -->
         <header class="text-center">
             <h1 class="text-5xl sm:text-6xl md:text-8xl font-black text-slate-900 mb-3 tracking-tighter uppercase italic leading-[0.9]">
                 CLIENT <span class="text-red-600">WINS</span>
@@ -76,6 +89,7 @@
                 Click below to watch one of our most recent highlights
             </p>
 
+            <!-- Bouncing Arrows -->
             <div class="flex justify-center space-x-16 sm:space-x-32 mt-6 mb-4 animate-bounce-down">
                 <svg class="w-16 h-20 sm:w-24 sm:h-32 text-red-600" viewBox="0 0 100 130" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M30 10 C 45 40, 45 70, 50 110 M25 85 L50 115 L75 85" 
@@ -96,14 +110,25 @@
 
         <div class="relative">
             <div class="w-full mb-8 sm:mb-10">
+                <!-- Video Section -->
                 <div class="video-container mb-8 sm:mb-12">
+                    <div id="placeholder" class="video-placeholder">
+                        <div>
+                            <svg class="w-12 h-12 mx-auto mb-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                            </svg>
+                            <p class="font-bold text-lg uppercase tracking-tight text-slate-500">Waiting for video...</p>
+                            <p class="text-sm text-slate-400">Please provide a valid Loom ID in the URL</p>
+                        </div>
+                    </div>
                     <iframe id="video-iframe"
-                            src="https://www.loom.com/embed/s6p9s8d7f5g4h3j2k1?autoplay=1&hide_owner=true&hide_share=true&hide_title=true&hide_embed_top_bar=true" 
+                            src="" 
                             frameborder="0" 
                             webkitallowfullscreen mozallowfullscreen allowfullscreen>
                     </iframe>
                 </div>
                 
+                <!-- CTA Box -->
                 <div class="bg-yellow-400 p-6 sm:p-12 rounded-2xl shadow-xl border-[3px] sm:border-4 border-slate-900 transform -rotate-1 sm:hover:rotate-0 transition-transform text-center">
                     <a href="https://za-training-blueprint.vercel.app/" 
                        target="_blank" 
@@ -119,8 +144,13 @@
     <script>
         const urlParams = new URLSearchParams(window.location.search);
         const videoId = urlParams.get('v');
+        const iframe = document.getElementById('video-iframe');
+        const placeholder = document.getElementById('placeholder');
+
         if (videoId) {
-            const iframe = document.getElementById('video-iframe');
+            // If ID exists, show iframe and hide placeholder
+            placeholder.style.display = 'none';
+            iframe.style.display = 'block';
             iframe.src = `https://www.loom.com/embed/${videoId}?autoplay=1&hide_owner=true&hide_share=true&hide_title=true&hide_embed_top_bar=true`;
         }
     </script>
